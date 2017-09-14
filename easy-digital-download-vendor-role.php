@@ -8,10 +8,23 @@
  * Author URI: http://kevindahlberg.com
  * License: GPL 3.0
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * EDD Vendor Role is a free plugin, and like Wordpress, is licensed under GPL 3.0, and is free for you to edit as you wish.
+ *
+ * This plugin depends on the Easy Digital Download Plugin to run.  Don't forget to intall that.
  */
 
-register_activation_hook()
+function plugin_activation(){
 
-register_deactivation_hook()
+}
+register_activation_hook( __FILE__, 'plugin_activation')
 
-register_uninstall_hook()
+function plugin_deactivation(){
+
+}
+register_deactivation_hook( __FILE__, 'plugin_deactivation')
+
+function plugin_uninstall(){
+
+}
+register_uninstall_hook( __FILE__, 'plugin_uninstall')

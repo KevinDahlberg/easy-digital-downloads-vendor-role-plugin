@@ -15,35 +15,53 @@
  */
 
 function eddv_plugin_activation(){
-  require_once( dirname( __FILE__ ) . '/classes/eddv-settings.php' );
+  if( class_exists( 'Easy Digital Downloads') || function_exists( 'EDD' ) ) {
+    if ( get_role( 'shop_vendor' ) ){
+      remove_role( 'shop_vendor' ) );
+    }
+
+    add_role( 'shop_vendor', __( 'Shop Vendor' ), array(
+      'read'          => true,
+      'edit_posts'    => false,
+      'upload_files'  => true,
+      'delete_posts'  => false,
+      'publish_posts' => true
+    ) );
+
+    $role = get_role( 'shop_vendor' )
+    $role->add_cap( 'shop_vendor', 'edit_product' );
+    $role->add_cap( 'shop_vendor', 'edit_products' );
+    $role->add_cap( 'shop_vendor', 'delete_product' );
+    $role->add_cap( 'shop_vendor', 'delete_products' );
+    $role->add_cap( 'shop_vendor', 'publish_products' );
+    $role->add_cap( 'shop_vendor', 'edit_published_products' );
+    $role->add_cap( 'shop_vendor', 'upload_files' );
+    $role->add_cap( 'shop_vendor', 'assign_product_terms' );
+  } else {
+    echo 'error'
+  }
 
 }
 
 register_activation_hook( __FILE__, 'eddv_plugin_activation')
 
 function eddv_plugin_deactivation(){
-
+  if( !class_exists( 'Easy Digital Downloads' ) || !function_exists( 'EDD' ) ) {
+    $role = get_role( 'shop_vendor' )
+    $role->remove_cap( 'shop_vendor', 'edit_product' );
+    $role->remove_cap( 'shop_vendor', 'edit_products' );
+    $role->remove_cap( 'shop_vendor', 'delete_product' );
+    $role->remove_cap( 'shop_vendor', 'delete_products' );
+    $role->remove_cap( 'shop_vendor', 'publish_products' );
+    $role->remove_cap( 'shop_vendor', 'edit_published_products' );
+    $role->remove_cap( 'shop_vendor', 'upload_files' );
+    $role->remove_cap( 'shop_vendor', 'assign_product_terms' );
+  }
 }
+
 register_deactivation_hook( __FILE__, 'eddv_plugin_deactivation')
 
 function eddv_plugin_uninstall(){
 
 }
 register_uninstall_hook( __FILE__, 'eddv_plugin_uninstall')
-
-
-if ( function_exists('my_plugin_function') ){
-remove_action ('CALLED_HOOK','my_plugin_function');
-add_action ('CALLED_HOOK','my_NEW_plugin_function');
-}
-else{
-add_action( 'admin_notices', 'my_plugin_patch_error' );
-}
-function my_plugin_patch_error() {
-$class = 'notice notice-error';
-$message = __( ' plugin patch (functions.php line ...) not workng any longer');
-printf( '%2$s', $class, $message );
-}
-function my_NEW_plugin_function(){
-//modified function here
-}

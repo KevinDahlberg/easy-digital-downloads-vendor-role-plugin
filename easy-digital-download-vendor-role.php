@@ -15,11 +15,14 @@
  */
 
 function eddv_plugin_activation(){
+  //checks to see if EDD is installed
   if( class_exists( 'Easy Digital Downloads') || function_exists( 'EDD' ) ) {
+    //removes EDD's version of the shop_vendor role
     if ( get_role( 'shop_vendor' ) ){
-      remove_role( 'shop_vendor' ) );
+      remove_role( 'shop_vendor' );
     }
 
+    //adds our version of the shop vendor role
     add_role( 'shop_vendor', __( 'Shop Vendor' ), array(
       'read'          => true,
       'edit_posts'    => false,
@@ -28,7 +31,8 @@ function eddv_plugin_activation(){
       'publish_posts' => true
     ) );
 
-    $role = get_role( 'shop_vendor' )
+    $role = get_role( 'shop_vendor' );
+
     $role->add_cap( 'shop_vendor', 'edit_product' );
     $role->add_cap( 'shop_vendor', 'edit_products' );
     $role->add_cap( 'shop_vendor', 'delete_product' );
@@ -37,17 +41,16 @@ function eddv_plugin_activation(){
     $role->add_cap( 'shop_vendor', 'edit_published_products' );
     $role->add_cap( 'shop_vendor', 'upload_files' );
     $role->add_cap( 'shop_vendor', 'assign_product_terms' );
-  } else {
-    echo 'error'
   }
 
 }
 
-register_activation_hook( __FILE__, 'eddv_plugin_activation')
+register_activation_hook( __FILE__, 'eddv_plugin_activation');
 
 function eddv_plugin_deactivation(){
   if( !class_exists( 'Easy Digital Downloads' ) || !function_exists( 'EDD' ) ) {
-    $role = get_role( 'shop_vendor' )
+    $role = get_role( 'shop_vendor' );
+    
     $role->remove_cap( 'shop_vendor', 'edit_product' );
     $role->remove_cap( 'shop_vendor', 'edit_products' );
     $role->remove_cap( 'shop_vendor', 'delete_product' );
@@ -59,9 +62,9 @@ function eddv_plugin_deactivation(){
   }
 }
 
-register_deactivation_hook( __FILE__, 'eddv_plugin_deactivation')
+register_deactivation_hook( __FILE__, 'eddv_plugin_deactivation');
 
 function eddv_plugin_uninstall(){
 
 }
-register_uninstall_hook( __FILE__, 'eddv_plugin_uninstall')
+register_uninstall_hook( __FILE__, 'eddv_plugin_uninstall');

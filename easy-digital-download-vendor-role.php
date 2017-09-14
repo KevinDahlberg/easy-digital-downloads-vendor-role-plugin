@@ -14,17 +14,36 @@
  * This plugin depends on the Easy Digital Download Plugin to run.  Don't forget to intall that.
  */
 
-function plugin_activation(){
+function eddv_plugin_activation(){
+  require_once( dirname( __FILE__ ) . '/classes/eddv-settings.php' );
 
 }
-register_activation_hook( __FILE__, 'plugin_activation')
 
-function plugin_deactivation(){
+register_activation_hook( __FILE__, 'eddv_plugin_activation')
 
-}
-register_deactivation_hook( __FILE__, 'plugin_deactivation')
-
-function plugin_uninstall(){
+function eddv_plugin_deactivation(){
 
 }
-register_uninstall_hook( __FILE__, 'plugin_uninstall')
+register_deactivation_hook( __FILE__, 'eddv_plugin_deactivation')
+
+function eddv_plugin_uninstall(){
+
+}
+register_uninstall_hook( __FILE__, 'eddv_plugin_uninstall')
+
+
+if ( function_exists('my_plugin_function') ){
+remove_action ('CALLED_HOOK','my_plugin_function');
+add_action ('CALLED_HOOK','my_NEW_plugin_function');
+}
+else{
+add_action( 'admin_notices', 'my_plugin_patch_error' );
+}
+function my_plugin_patch_error() {
+$class = 'notice notice-error';
+$message = __( ' plugin patch (functions.php line ...) not workng any longer');
+printf( '%2$s', $class, $message );
+}
+function my_NEW_plugin_function(){
+//modified function here
+}

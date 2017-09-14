@@ -3,6 +3,8 @@
 ## Description
 Wordpress plugin that gives users with the role of Vendor the ability to publish posts.
 
+* plugin still needs more work.  The plugin that the client paid for has similar funcitonality.
+
 ## Dependencies
 This plugin doesn't work on it's own.  You need to have the Easy Digital Download Plugin installed first.
 
